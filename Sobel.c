@@ -7,14 +7,14 @@
         int maskx[3][3] = {{-1,0,1},{-2,0,2},{-1,0,1}};
         int masky[3][3] = {{1,2,1},{0,0,0},{-1,-2,-1}};
         double ival[256][256],maxival;
+        int rows = 256;
+        int cols = 256;
 
-main(argc,argv)
-int argc;
-char **argv;
+int main(int argc, char *argv[])
 {
         int i,j,p,q,mr,sum1,sum2;
         double threshold;
-        FILE *fo1, *fo2, *fp1, *fopen();
+        FILE *fo1, *fo2, *fp1;
         char *foobar;
 
         argc--; argv++;
@@ -24,6 +24,9 @@ char **argv;
 	argc--; argv++;
 	foobar = *argv;
 	fo1=fopen(foobar,"wb");
+        fprintf(fo1, "P5\n");
+        fprintf(fo1, "%d %d\n", cols, rows);
+        fprintf(fo1, "255\n");
 
         
         argc--; argv++;
