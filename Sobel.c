@@ -1,5 +1,7 @@
 #include <stdio.h> /* Sobel.c */
 #include <math.h>
+#include <string.h>
+#include <stdlib.h>
 
 int pic[256][256];
 int outpicx[256][256];
@@ -13,15 +15,49 @@ int cols = 256;
 int main(int argc, char *argv[])
 {
         int i, j, p, q, mr, sum1, sum2;
-        double threshold;
-        FILE *fo1, *fo2, *fo3, *fp1;
-        char *foobar;
+        double high_thresh, low_thresh;
+        FILE *fp1, *fo1, *fo2, *fo3;
+        char *foobar, *foobar1;
 
+        // Parsing input file
         argc--;
         argv++;
         foobar = *argv;
         fp1 = fopen(foobar, "rb");
+        fp1 = fopen(foobar, "rb");
+        if (!fp1)
+        {
+                perror("fopen");
+                exit(1);
+        }
 
+        char header[256];
+        int width, height, maxval;
+        /* read magic number */
+        fgets(header, sizeof(header), fp1);
+        if (strncmp(header, "P5", 2) != 0)
+        {
+                printf("Unsupported format (expected P5)\n");
+                exit(1);
+        }
+
+        /* read width and height */
+        do
+        {
+                fgets(header, sizeof(header), fp1);
+        } while (header[0] == '#');
+
+        sscanf(header, "%d %d", &width, &height);
+
+        /* read maxval */
+        do
+        {
+                fgets(header, sizeof(header), fp1);
+        } while (header[0] == '#');
+
+        sscanf(header, "%d", &maxval);
+
+        // outputs
         argc--;
         argv++;
         foobar = *argv;
@@ -40,10 +76,12 @@ int main(int argc, char *argv[])
         argc--;
         argv++;
         foobar = *argv;
-        threshold = atof(foobar);
+        high_thresh = atof(foobar);
 
-        double high_thresh = threshold * 1.1;
-        double low_thresh = threshold * 0.375;
+        argc--;
+        argv++;
+        foobar1 = *argv;
+        low_thresh = atof(foobar1);
 
         for (i = 0; i < 256; i++)
         {

@@ -24,4 +24,4 @@ clean:
 
 # Convenience target: build + run (optional)
 run: $(TARGET)
-	./$(TARGET) garb34.pgm sobelmag.pgm 100
+	./$(TARGET) garb34.pgm sobelmag.pgm 110 40
